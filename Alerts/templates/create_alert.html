@@ -1,0 +1,27 @@
+<!-- create_alert.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Alert</title>
+  </head>
+  <body>
+    <h1>Create Alert</h1>
+    <form action="/api/alerts/create/" method="post">
+      {% csrf_token %}
+      <div style="margin-bottom: 10px;">
+        <label for="search_phrase">Search Phrase:</label>
+        <input type="text" name="search_phrase" id="search_phrase" required>
+      </div>
+      <div style="margin-bottom: 10px;">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+      </div>
+      <div style="margin-bottom: 10px;">
+        <label for="frequency">Frequency:</label>
+        <input type="text" name="frequency" id="frequency" required>
+      </div>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

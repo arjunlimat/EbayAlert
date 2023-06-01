@@ -29,45 +29,40 @@ The Django Alert Management System is a web application that allows users to cre
 
 ### Installation
 
-1. Clone the repository:
+Clone the repository:
 
 git clone https://github.com/arjunlimat/EbayAlert.git
 Navigate to the project directory:
 
-bash
-Copy code
+##
 
 cd your-repo
 Install the required dependencies:
 
-bash
-Copy code
+##
 
 pip install -r requirements.txt
 
 Apply database migrations:
 
-bash
-Copy code
+##
 
 python manage.py migrate
 
 Run the development server:
-bash
-Copy code
-
+##
 python manage.py runserver
 
 Access the application in your web browser at http://localhost:8000.
 
-Usage
+##Usage
 Register a new user account or log in to an existing account.
 Create alerts by providing the search phrase, email address, and frequency.
 Scheduled email notifications will be sent based on the specified frequency, containing the first 20 products sorted by the lowest price.
 Manage your alerts by editing, deleting, or creating new ones.
 
 
-Acknowledgements
+##Acknowledgements
 Django Documentation
 Bootstrap Documentation
 Django Schedule Documentation

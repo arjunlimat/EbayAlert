@@ -3,14 +3,28 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Alert
 from .serializers import AlertSerializer
+from django.shortcuts import render
+from rest_framework.request import Request
+from django.http import HttpResponse
+from django.core.mail import send_mail
 
-@api_view(['POST'])
 def create_alert(request):
-    serializer = AlertSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+    if request.method == 'POST':
+        serializer = AlertSerializer(data=request.POST)
+        if serializer.is_valid():
+            serializer.save()
+            # Send email to the user
+            search_phrase = request.POST.get('search_phrase')
+            email = request.POST.get('email')
+            frequency = request.POST.get('frequency')
+            
+            return HttpResponse("Alert created successfully!")
+        return Response(serializer.errors, status=400)
+    else:
+        if request.method == 'GET':
+            return render(request, 'create_alert.html')
+        else:
+            return HttpResponse("Method not allowed.", status=405)
 
 @api_view(['GET'])
 def alert_list(request):

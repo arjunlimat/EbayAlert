@@ -4,7 +4,6 @@ from django.db import models
 class Alert(models.Model):
     search_phrase = models.CharField(max_length=255)
     email = models.EmailField()
-    frequency = models.IntegerField()
-
+    frequency = models.TextField()
     def __str__(self):
         return self.search_phrase

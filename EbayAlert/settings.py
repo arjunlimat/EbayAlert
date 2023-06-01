@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-%yri9(f1k30&di^c)o9qm4jw&z4xzh8*4yw*5@tgo0-kc0!y0s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -69,6 +69,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'EbayAlert.wsgi.application'
 
