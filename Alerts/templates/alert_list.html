@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Alert List</title>
+    <style>
+      body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Alert List</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Search Phrase</th>
+          <th>Email</th>
+          <th>Frequency</th>
+          <th>Created Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alert in alerts %}
+        <tr>
+          <td>{{ alert.id }}</td>
+          <td>{{ alert.search_phrase }}</td>
+          <td>{{ alert.email }}</td>
+          <td>{{ alert.frequency }}</td>
+          <td>{{ alert.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

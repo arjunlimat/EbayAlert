@@ -1,27 +1,74 @@
-<!-- create_alert.html -->
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Create Alert</title>
-  </head>
-  <body>
+<head>
+  <title>Create Alert</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .form-container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .form-container input,
+    .form-container select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .form-container input[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .form-container input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
     <h1>Create Alert</h1>
     <form action="/api/alerts/create/" method="post">
       {% csrf_token %}
-      <div style="margin-bottom: 10px;">
-        <label for="search_phrase">Search Phrase:</label>
-        <input type="text" name="search_phrase" id="search_phrase" required>
-      </div>
-      <div style="margin-bottom: 10px;">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-      </div>
-      <div style="margin-bottom: 10px;">
-        <label for="frequency">Frequency:</label>
-        <input type="text" name="frequency" id="frequency" required>
-      </div>
+      <label for="search_phrase">Search Phrase:</label>
+      <input type="text" name="search_phrase" id="search_phrase" required>
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required>
+
+      <label for="frequency">Frequency:</label>
+      <select name="frequency" id="frequency" required>
+        <option value="2">2 minutes</option>
+        <option value="10">10 minutes</option>
+        <option value="30">30 minutes</option>
+      </select>
+
       <input type="submit" value="Submit">
     </form>
-  </body>
+  </div>
+</body>
 </html>

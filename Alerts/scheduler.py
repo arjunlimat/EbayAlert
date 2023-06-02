@@ -1,57 +1,141 @@
-
-# Get the data for the table (example DataFrame)
-#data = {'Column1': [1, 2, 3], 'Column2': ['A', 'B', 'C']}
-#df = pd.DataFrame(data)
-# Convert the DataFrame to an HTML table
-#table_html = df.to_html(index=False)
-# Send the email with the HTML table in the body
-#send_mail('Alert',f'You have a new alert for search phrase: {alert.search_phrase}\n\n{table_html}',
-#        'from@example.com',[alert.email],fail_silently=False,)
-
-
 import schedule
 import time
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
-
+import requests
+import urllib.parse
+import os
+import sys
+import django
 # Dictionary to store the last sent time for each alert
 last_sent_times = {}
+from django.conf import settings
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Get the directory of the Django project (one folder back)
+project_dir = os.path.abspath(os.path.join(script_dir, '..'))
+# Add the project directory to the system path
+sys.path.append(project_dir)
+# Manually configure Django settings
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "EbayAlert.settings")
+django.setup()
+# Now you can access the Django settings
+installed_apps = settings.INSTALLED_APPS
+# Start your scheduler logic here
+from Alerts.models import Alert, Price
+from config import DEV
+def search_ebay(keyword):
+    url = DEV['EBAY_API_URL']
+    params = {
+        "OPERATION-NAME": "findItemsByKeywords",
+        "SERVICE-VERSION": "1.0.0",
+        "SECURITY-APPNAME": DEV['SECURITY-APPNAME'],
+        "RESPONSE-DATA-FORMAT": "JSON",
+        "keywords": keyword,
+        "itemFilter.paramName": "MinPrice",
+        "paginationInput.entriesPerPage": 20
+    }
+    response = requests.get(url, params = params, verify = False)
+    print(response.json())
+    if response.status_code == 200:
+        data = response.json()
+        if 'findItemsByKeywordsResponse' in data:
+            search_response = data['findItemsByKeywordsResponse'][0]
+            if 'searchResult' in search_response:
+                search_result = search_response['searchResult'][0]
+                if 'item' in search_result:
+                    items = search_result['item']
+                    # Create an empty DataFrame
+                    df = pd.DataFrame(columns=['Title', 'URL', 'Location', 'Price'])
+                    for item in items:
+                        title = item.get('title', [''])[0]
+                        viewItemURL = item.get('viewItemURL', [''])[0]
+                        location = item.get('location', [''])[0]
+                        currentPrice = item.get('sellingStatus', [{'currentPrice': [{'__value__': '0'}]}])[0]['currentPrice'][0]['__value__']
+                        # Append values to DataFrame
+                        # Append values to a temporary DataFrame
+                        temp_df = pd.DataFrame({'Title': [title], 'URL': [viewItemURL], 'Location': [location], 'Price': [currentPrice]})
+                        # Concatenate the temporary DataFrame with the main DataFrame
+                        df = pd.concat([df, temp_df], ignore_index=True)
+                    return df
+                else:
+                   return "No items found."
+            else:
+                return "No search results found."
+        else:
+            return "Invalid JSON response."
+        
+    else:
+        print(f"Failed to retrieve search results from eBay API. Error code: {response.status_code}")
+        return None
 
 def get_alerts():
     print('inside get_alerts method')
-    response = requests.get('http://127.0.0.1:8000/api/alerts/list/')
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print('Failed to fetch alerts from the API.')
-        return []
+    from django.core import serializers
+    import json
+    alerts = Alert.objects.all()
+    serialized_data = serializers.serialize('json', alerts)
+    data = json.loads(serialized_data)
+    converted_data = []
+    for item in data:
+        new_item = {'id': item['pk']}
+        new_item.update(item['fields'])
+        converted_data.append(new_item)
+    return converted_data
+   # if response.status_code == 200:
+   #     return response.json()
+   # else:
+   #     print('Failed to fetch alerts from the API.')
+   #     return []
 
 def send_email(alert):
     search_phrase = alert['search_phrase']
     email = alert['email']
     frequency = alert['frequency']
-
+    response_data = search_ebay(search_phrase)
+    table_html = response_data.to_html(index=False) 
     # Check if it's time to send the email based on the frequency
     last_sent = last_sent_times.get(f"{email}_{search_phrase}_last_sent")
-
+    first_row = response_data.iloc[0]
+    title = first_row['Title']
+    viewItemURL = first_row['URL']
+    location = first_row['Location']
+    currentPrice = first_row['Price']        
+    # Check if a record with the same email and frequency already exists
+    existing_price = Price.objects.filter(email_id=email, frequency=frequency)     
+    if existing_price:
+        # Delete the existing record
+        existing_price.delete()
+     
+    # Create a new Price object and save it to the database
+    price = Price(item=title, email_id=email, price=currentPrice, frequency=frequency)
+    price.save()
     if last_sent is None or last_sent + timedelta(minutes=get_minutes(frequency)) <= datetime.now():
         # Set up the Mailgun API request payload
+        email_body = f"""
+                    <html>
+                    <head></head>
+                    <body>
+                    {table_html}
+                    </body>
+                    </html>
+                    """
         payload = {
-            "from": "Mailgun Sandbox <postmaster@sandboxa81ff9ec1470403d876656d36da6d3ea.mailgun.org>",
+            "from": DEV['MAILGUN_SENDER'],
             "to": email,
             "subject": "Alert",
-            "text": f"A alert for '{search_phrase}' has been triggered (Frequency: {frequency})."
+            "html": email_body
+           # "text": f"A alert for '{search_phrase}' has been triggered (Frequency: {frequency})\n\n{table_html}."
         }
+        
         # Make the Mailgun API request
         response = requests.post(
-            "http://api.mailgun.net/v3/sandboxa81ff9ec1470403d876656d36da6d3ea.mailgun.org/messages",
-            auth = ("api", "c570d35e4bbfd9481d3847537b7c8f45-5d9bd83c-ac5c6863"),
+            DEV['MAILGUN_API_URL'],
+            auth = ("api", DEV['MAILGUN_APIKEY']),#"YOUR_API_KEY"
             data = payload,
             verify = False
         )
-        import pdb
-        pdb.set_trace()
         # Check if the email was sent successfully
         if response.status_code == 200:
             print(f"Email sent to {email} successfully.")

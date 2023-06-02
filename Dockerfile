@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 8080
 
 # Run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["bash", "-c", "python manage.py runserver 0.0.0.0:8080"]
+

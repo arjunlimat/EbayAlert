@@ -10,14 +10,12 @@ from django.core.mail import send_mail
 
 def create_alert(request):
     if request.method == 'POST':
-        serializer = AlertSerializer(data=request.POST)
+        serializer = AlertSerializer(data = request.POST)
         if serializer.is_valid():
             serializer.save()
-            # Send email to the user
             search_phrase = request.POST.get('search_phrase')
             email = request.POST.get('email')
             frequency = request.POST.get('frequency')
-            
             return HttpResponse("Alert created successfully!")
         return Response(serializer.errors, status=400)
     else:
@@ -30,7 +28,8 @@ def create_alert(request):
 def alert_list(request):
     alerts = Alert.objects.all()
     serializer = AlertSerializer(alerts, many=True)
-    return Response(serializer.data)
+    context = {'alerts': alerts}
+    return render(request, 'alert_list.html', context)
 
 @api_view(['GET'])
 def get_alert(request, alert_id):
