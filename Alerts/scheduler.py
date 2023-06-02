@@ -72,23 +72,21 @@ def search_ebay(keyword):
 
 def get_alerts():
     print('inside get_alerts method')
-    from django.core import serializers
-    import json
-    alerts = Alert.objects.all()
-    serialized_data = serializers.serialize('json', alerts)
-    data = json.loads(serialized_data)
     converted_data = []
-    for item in data:
-        new_item = {'id': item['pk']}
-        new_item.update(item['fields'])
-        converted_data.append(new_item)
-    return converted_data
-   # if response.status_code == 200:
-   #     return response.json()
-   # else:
-   #     print('Failed to fetch alerts from the API.')
-   #     return []
-
+    try:
+        from django.core import serializers
+        import json
+        alerts = Alert.objects.all()
+        serialized_data = serializers.serialize('json', alerts)
+        data = json.loads(serialized_data)
+        
+        for item in data:
+            new_item = {'id': item['pk']}
+            new_item.update(item['fields'])
+            converted_data.append(new_item)
+        return converted_data
+    except:
+        return converted_data
 def send_email(alert):
     search_phrase = alert['search_phrase']
     email = alert['email']
@@ -183,12 +181,13 @@ def schedule_job():
 def run_scheduler():
     while True:
         try:
+            print('running')
             schedule.run_pending()
-            time.sleep(1)
+            time.sleep(60)
+            schedule_job()
         except KeyboardInterrupt:
             print('Scheduler stopped.')
             break
 
 if __name__ == '__main__':
-    schedule_job()
     run_scheduler()

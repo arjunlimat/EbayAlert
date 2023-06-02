@@ -12,11 +12,11 @@ services:
   scheduler1:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.scheduler
     command: sh -c "sleep 20 && python Alerts/scheduler.py"
 
   scheduler2:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.phase2_scheduler
     command: sh -c "sleep 25 && python Alerts/phase2_scheduler.py"
