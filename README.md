@@ -140,9 +140,10 @@ change
 - created django unit test cases inside tests.py
 
 ### Acknowledgements
-Django Documentation
-Django Schedule Documentation
-Mail Gun Documentation
+- Django Documentation
+- Django Schedule Documentation
+- Mail Gun API Documentation
+- EBay Developers API Documentation
 
 Feel free to modify and customize the README.md file according to your project's specific details, dependencies, and instructions.
 
