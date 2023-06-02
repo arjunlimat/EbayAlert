@@ -82,11 +82,11 @@ Access the application in your web browser at http:/localhost:8080/api/alerts/cr
 
 ### http:/localhost:8080/api/alerts/1/update/ 
 
-- Update the alert based on alert id
+- Update the alert based on alert id (Above alert id 1)
 
 ### http:/localhost:8080/api/alerts/1/delete/  
 
-- Delete the alert based on alert id
+- Delete the alert based on alert id (Above alert id 1 is getting deleted)
 
 ### Usage
 Create alerts by providing the search phrase, email address, and frequency.
