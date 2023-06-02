@@ -80,7 +80,7 @@ Access the application in your web browser at http://localhost:8080.
 
 ----Show the list of alerts
 
-#### http:/localhost:8080/api/alerts/create/ 
+### http:/localhost:8080/api/alerts/create/ 
 
 -----Allows user to create alert and make sure this mail id added mail gun sandbox account verified list.
 
