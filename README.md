@@ -21,7 +21,7 @@ This project allows users to set up alerts for specific product searches on eBay
 ### Technologies Used
 
 - Django: A high-level Python web framework for rapid development and clean design.
-- SQLite: A lightweight and serverless database used for local development.
+- SQLite3: A lightweight and serverless database used for local development.
 - HTML,React: A popular UI react framework for creating alert with HTMK template.
 - Django Schedule: A library for creating and managing scheduled tasks within Django.
 - Mail Gun:  Powerful email delivery service and email automation platform. 
@@ -34,6 +34,8 @@ It provides developers with a set of APIs that allow easy integration of email f
 - Python 3.x
 - Django
 - SQLite3
+- Mail GUN API Key
+- Ebay Finding API APP-NAME
 
 ### Installation
 
@@ -68,25 +70,25 @@ python manage.py migrate
 
 docker-compose up
 
-Access the application in your web browser at http://localhost:8080.
+Access the application in your web browser at http:/localhost:8080/api/alerts/create/.
 
 ### APIs
 
 ### http:/localhost:8080/api/alerts/list/ 
 
--Show the list of alerts
+- Show the list of alerts
 
 ### http:/localhost:8080/api/alerts/create/ 
 
--Allows user to create alert and make sure this mail id added mail gun sandbox account verified list.
+- Allows user to create alert and make sure this mail id added mail gun sandbox account verified list.
 
 ### http:/localhost:8080/api/alerts/1/update/ 
 
--Update the alert based on alert id
+- Update the alert based on alert id
 
 ### http:/localhost:8080/api/alerts/1/delete/  
 
--Delete the alert based on alert id
+- Delete the alert based on alert id
 
 ### Usage
 Create alerts by providing the search phrase, email address, and frequency.
@@ -103,13 +105,8 @@ The models.py file contains the database models for storing the alert and price 
 eBay Finding API: Sign up for an eBay developer account and obtain the necessary API credentials.
 Mailgun API: Sign up for a Mailgun account and obtain the API key and domain.
 
-### Update the eBay API credentials in the search_ebay function in scheduler.py.
-### Update the Mailgun API credentials and email settings in the send_email function in scheduler.py.
-
-### Acknowledgements
-Django Documentation
-Django Schedule Documentation
-Mail Gun Documentation
+- Update the eBay API credentials in the search_ebay function in scheduler.py and phase2_scheduler.py.
+- Update the Mailgun API credentials and email settings in the send_email function in scheduler.py and phase2_scheduler.py.
 
 The provided docker-compose.yml file defines three services: web, scheduler1, and scheduler2. Here's a breakdown of each service:
 
@@ -127,7 +124,7 @@ This scheduler will fetch data from Alerts table and send mail using Mail Gun se
 I was using Mail Gun sandbox service to send mail . Please create Mail Gun sandbox account and add your mail id and verified participants.
 Then use the add your mail id into above alerts. 
 This service handles below requirement:
--User should obtain the first 20 products sorted by the lowest price every 2, 10 or 30 minutes
+- User should obtain the first 20 products sorted by the lowest price every 2, 10 or 30 minutes
 delivered to his email address as per alert configuration.
 
 ### scheduler2 service:
@@ -135,12 +132,17 @@ It also builds the image using the same Dockerfile in the current context.
 Executes the command sh -c "sleep 25 && python Alerts/phase2_scheduler.py" to wait for 25 seconds and then run the phase2_scheduler.py script inside the container.
 This configuration allows you to start the Django server first and then start the two schedulers with a delay of 20 and 25 seconds, respectively, after the Django server is up and running.
 This service handles below requirement
--New cheaper product is available for your search and
--Your search results didn’t have price changes over the last 2 days, act now before prices
+- New cheaper product is available for your search and
+- Your search results didn’t have price changes over the last 2 days, act now before prices
 change
 
 ### Unit test cases
 - created django unit test cases inside tests.py
+
+### Acknowledgements
+Django Documentation
+Django Schedule Documentation
+Mail Gun Documentation
 
 Feel free to modify and customize the README.md file according to your project's specific details, dependencies, and instructions.
 
