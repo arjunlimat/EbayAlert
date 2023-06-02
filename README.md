@@ -21,7 +21,7 @@ This project allows users to set up alerts for specific product searches on eBay
 - Django: A high-level Python web framework for rapid development and clean design.
 - SQLite3: A lightweight and serverless database used for local development.
 - HTML,React: A popular UI react framework for creating alert with HTMK template.
-- Django Schedule: A library for creating and managing scheduled tasks within Django.
+- Schedule Package: A library for creating and managing scheduled tasks.
 - Mail Gun:  Powerful email delivery service and email automation platform. 
 It provides developers with a set of APIs that allow easy integration of email functionality into applications and websites.
 
@@ -32,7 +32,7 @@ It provides developers with a set of APIs that allow easy integration of email f
 - Python 3.x
 - Django
 - SQLite3
-- Mail GUN API Key
+- Mail Gun API Key
 - Ebay Finding API APP-NAME
 
 ### Installation
@@ -140,7 +140,7 @@ change
 
 ### Acknowledgements
 - Django Documentation
-- Django Schedule Documentation
+- Python Schedule Documentation
 - Mail Gun API Documentation
 - EBay Developers API Documentation
 
