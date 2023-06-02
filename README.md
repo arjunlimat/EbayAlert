@@ -1,8 +1,6 @@
 ### EbayAlert
 A service to manage alerts for products prices on Ebay.com, the service will allow a user to create an alert so he can receive updates about specific products search phrases delivered to his email address.
-### Django Alert Management System
-
-The Django Alert Management System is a web application that allows users to create alerts for product prices on Ebay.com and receive updates delivered to their email address. The application provides a simple and convenient way to track and monitor product prices based on user-defined search phrases.
+This EbayAlert is a web application that allows users to create alerts for product prices on Ebay.com and receive updates delivered to their email address. The application provides a simple and convenient way to track and monitor product prices based on user-defined search phrases.
 This project allows users to set up alerts for specific product searches on eBay and receive periodic email notifications with the lowest-priced products matching their search criteria. The alerts can be configured to trigger every 2, 10, or 30 minutes.
 
 - Users can create alerts by providing the search phrase, email address, and frequency (2, 10, or 30 minutes).
@@ -136,6 +134,7 @@ This service handles below requirement
 - Your search results didn’t have price changes over the last 2 days, act now before prices
 change
 
+- Above both scheduler functionality can also be implemented by cron job or aws lambda or azure function to trigger.
 ### Unit test cases
 - created django unit test cases inside tests.py
 
