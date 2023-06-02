@@ -74,11 +74,23 @@ Run the development server:
 docker-compose up
 
 Access the application in your web browser at http://localhost:8080.
-##APIs
-http:/localhost:8080/api/alerts/list/ ----Show the list of alerts
-http:/localhost:8080/api/alerts/create/ -----Allows user to create alert and make sure this mail id added mail gun sandbox account verified list.
-http:/localhost:8080/api/alerts/1/update/ ----Update the alert based on alert id
-http:/localhost:8080/api/alerts/1/delete/  ----Delete the alert based on alert id
+###APIs
+
+### http:/localhost:8080/api/alerts/list/ 
+
+----Show the list of alerts
+
+#### http:/localhost:8080/api/alerts/create/ 
+
+-----Allows user to create alert and make sure this mail id added mail gun sandbox account verified list.
+
+### http:/localhost:8080/api/alerts/1/update/ 
+
+----Update the alert based on alert id
+
+### http:/localhost:8080/api/alerts/1/delete/  
+
+----Delete the alert based on alert id
 
 ##Usage
 Register a new user account or log in to an existing account.
