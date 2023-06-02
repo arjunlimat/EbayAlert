@@ -113,7 +113,7 @@ The provided docker-compose.yml file defines three services: web, scheduler1, an
 It builds the image using the Dockerfile in the current context.
 Maps port 8080 of the container to port 8080 of the host machine.
 Executes the command python manage.py runserver 0.0.0.0:8080 to start the Django development server.
-Below both schedulers are depends upon django serivice, so it necessary to start django first.
+Below both schedulers are depends upon django service, so it necessary to start django first.
 
 ### scheduler1 service:
 It also builds the image using the same Dockerfile in the current context.
