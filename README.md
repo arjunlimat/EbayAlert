@@ -21,7 +21,7 @@ This project allows users to set up alerts for specific product searches on eBay
 - Django: A high-level Python web framework for rapid development and clean design.
 - SQLite3: A lightweight and serverless database used for local development.
 - HTML,React: A popular UI react framework for creating alert with HTMK template.
-- Schedule Package: A library for creating and managing scheduled tasks.
+- Schedule : A Python library for creating and managing scheduled tasks.
 - Mail Gun:  Powerful email delivery service and email automation platform. 
 It provides developers with a set of APIs that allow easy integration of email functionality into applications and websites.
 
@@ -44,7 +44,7 @@ Navigate to the project directory:
 
 cd EbayAlert
 
-Please go to Alerts/config.py , replace the with the appropriate values
+Please go to Alerts/config.py , replace below keys with the appropriate values
 ### config.py
 DEV = {
     'SECURITY-APPNAME': 'yourappname',
