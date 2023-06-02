@@ -16,6 +16,7 @@ This project allows users to set up alerts for specific product searches on eBay
 - Alert creation with search phrase, email address, and frequency settings
 - Scheduled email notifications with the first 20 products sorted by the lowest price
 - CRUD operations for managing alerts
+- For timebeing i have default SQLite3 database but we can use PostgreSQL database (Scalability).
 
 ## Technologies Used
 
@@ -43,6 +44,17 @@ Navigate to the project directory:
 ##
 
 cd your-repo
+
+Please go to inside config.py , replace the with the required values
+# config.py
+DEV = {
+    'SECURITY-APPNAME': 'yourappname',
+    'MAILGUN_APIKEY': 'mailgunapi',
+    'EBAY_API_URL': 'EBAY_API_URL', 
+    'MAILGUN_SENDER': 'MAILGUN_SENDER',
+    'MAILGUN_API_URL': 'MAILGUN_API_URL',
+}
+
 Install the required dependencies:
 
 ##
@@ -95,10 +107,14 @@ web service:
 It builds the image using the Dockerfile in the current context.
 Maps port 8080 of the container to port 8080 of the host machine.
 Executes the command python manage.py runserver 0.0.0.0:8080 to start the Django development server.
+Below both schedulers are depends upon django serivice, so it necessary to start django first.
 
 scheduler1 service:
 It also builds the image using the same Dockerfile in the current context.
 Executes the command sh -c "sleep 20 && python Alerts/scheduler.py" to wait for 20 seconds and then run the scheduler.py script inside the container.
+This scheduler will fetch data from Alerts table and send mail using Mail Gun service.
+I was using Mail Gun sandbox service to send mail . Please create Mail Gun sandbox account and add your mail id and verified participants.
+Then use the add your mail id into above alerts. 
 
 scheduler2 service:
 It also builds the image using the same Dockerfile in the current context.
